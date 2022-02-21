@@ -15,7 +15,7 @@ const Main = () => {
       >
         <Stack spacing={5}>
           <Flex flex={{base: 1}} justify={'space-between'} align={'center'}>
-            <Text>Swap</Text>
+            <Text>Sending Currency</Text>
             {/* <SettingsIcon/> */}
           </Flex>
           <Flex flex={{base: 1}} justify={'space-between'} pr={3} align={'center'} bgColor="#20242A" borderRadius={20}>

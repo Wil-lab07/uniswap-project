@@ -11,13 +11,14 @@ const Header = () => {
     <>
       <Flex py={2} px={4} bgColor="#191B1F" align={'center'} justify={'space-between'}>
         <Flex flex={{base: 1}} justify={{base: 'center', md: 'start'}} align="center">
-          <Img src={'/uniswap.png'} w={'50px'} h={'50px'}/>
+          {/* <Img src={'/uniswap.png'} w={'50px'} h={'50px'}/> */}
+          <Text>SENDS</Text>
         </Flex>
         <Flex flex={{base: 1}} justify={'center'} display={{base: 'none', md: 'inline-flex'}} align="center">
           <HStack spacing={3} bgColor="blackAlpha.200" borderRadius={40}>
-            <Button colorScheme={'blackAlpha'} textColor="white" borderRadius={40} size={'sm'} px={5} py={5}>Swap</Button>
-            <Button colorScheme={'blackAlpha'} textColor="white" borderRadius={40} size={'sm'} px={5} py={5}>Pool</Button>
-            <Button colorScheme={'blackAlpha'} textColor="white" borderRadius={40} size={'sm'} px={5} py={5}>Vote</Button>
+            {/* <Button colorScheme={'blackAlpha'} textColor="white" borderRadius={40} size={'sm'} px={5} py={5}>Swap</Button> */}
+            {/* <Button colorScheme={'blackAlpha'} textColor="white" borderRadius={40} size={'sm'} px={5} py={5}>Pool</Button>
+            <Button colorScheme={'blackAlpha'} textColor="white" borderRadius={40} size={'sm'} px={5} py={5}>Vote</Button> */}
             <Link href="https://info.uniswap.org/#/"><Button colorScheme={'blackAlpha'} textColor="white" borderRadius={40} size={'sm'} px={5} py={5}>Charts</Button></Link>
           </HStack>
         </Flex>
