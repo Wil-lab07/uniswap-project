@@ -7,8 +7,6 @@ const Header = () => {
   const [userName, setUserName] = useState('')
   const [currentAccount, setCurrentAccount] = useState(false)
   
-  
-  
   return (
     <>
       <Flex py={2} px={4} bgColor="blackAlpha.400" align={'center'} justify={'space-between'}>
@@ -33,7 +31,7 @@ const Header = () => {
             {currentAccount ? 
               <Button borderRadius={40} size={'sm'} px={5} py={5}>{userName}</Button>
             :
-              <Button borderRadius={10} size={'sm'} px={2} py={5}><Text p={2} borderRadius={10} bgColor="#172A42" textColor={'#4F90EA'}>Connect Wallet</Text></Button>
+              <Button borderRadius={40} size={'sm'} px={2} py={5}><Text p={2} borderRadius={40} bgColor="#172A42" textColor={'#4F90EA'}>Connect Wallet</Text></Button>
             }
           </HStack>
         </Flex>
