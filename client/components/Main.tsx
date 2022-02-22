@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import {Box, Flex, Text, Button, Img, HStack, Stack, InputGroup, Input, Select} from '@chakra-ui/react'
-import {SettingsIcon} from '@chakra-ui/icons'
 const Main = () => {
+  let eth
+    
   return (
     <Flex justify={'center'} align={'center'}>
       <Flex
