@@ -1,7 +1,6 @@
 import {Box, Flex, Text, Button, Img, HStack, Menu, MenuButton, MenuList, MenuItem} from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { ChevronDownIcon } from '@chakra-ui/icons'
 import Swal from 'sweetalert2'
 import { useEthers, useEtherBalance } from "@usedapp/core";
 import { formatEther } from "@ethersproject/units";
@@ -12,15 +11,9 @@ const Header = () => {
   const [currentAccount, setCurrentAccount] = useState(false)
   const {activateBrowserWallet, account } = useEthers();
   const etherBalance = useEtherBalance(account);
-  
+
   useEffect(()=>{
-    try{
-      activateBrowserWallet();  
-      // setCurrentAccount(account[0])
-      // setUserName(account[0])
-    }catch(err){
-      console.error(err)
-    }
+    
   }, []) 
 
   const connectWallet = async ()=>{
@@ -61,15 +54,13 @@ const Header = () => {
         </Flex>
         <Flex flex={{base: 1}} justify={'center'} display={{base: 'none', md: 'inline-flex'}} align='center'>
           <HStack spacing={3}>
-            <Menu>
-              <MenuButton colorScheme={'blackAlpha'} textColor="white" borderRadius={40} size={'sm'} px={5} py={5} as={Button} rightIcon={<ChevronDownIcon />}>
-                {account ? 
-                <Flex>{etherBalance && parseFloat(formatEther(etherBalance)).toFixed(3)}<Img ml={2} src={'/eth.png'} w={'20px'}/></Flex>
-                :
-                <Flex>Ethereum<Img ml={2} src={'/eth.png'} w={'20px'}/></Flex>
-                }
-              </MenuButton>
-            </Menu>
+            <Box colorScheme={'blackAlpha'} textColor="white" borderRadius={40} size={'sm'} px={5} py={5} as={Button}>
+              {account ? 
+              <Flex>{etherBalance && parseFloat(formatEther(etherBalance)).toFixed(3)}<Img ml={2} src={'/eth.png'} w={'20px'}/></Flex>
+              :
+              <Flex>Ethereum<Img ml={2} src={'/eth.png'} w={'20px'}/></Flex>
+              }
+            </Box>
             {account || currentAccount ? 
               <Button colorScheme={'blackAlpha'} textColor="white" borderRadius={40} size={'sm'} px={5} py={5}>{account}</Button>
             :

@@ -8,7 +8,7 @@ const Main = () => {
       <Flex
         borderRadius={30}
         bgColor="#191B1F"
-        w="40rem"
+        w="30rem"
         py={4}
         pb={8}
         px={6}
