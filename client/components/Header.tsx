@@ -13,14 +13,9 @@ const Header = () => {
   const {activateBrowserWallet, account } = useEthers();
   const etherBalance = useEtherBalance(account);
   
-  let eth
-
   useEffect(()=>{
     try{
-      if(typeof window !== 'undefined'){
-        eth = window.ethereum
-      }
-      // const account = await eth.request({method: 'eth_requestAccounts'})
+      activateBrowserWallet();  
       // setCurrentAccount(account[0])
       // setUserName(account[0])
     }catch(err){
@@ -39,10 +34,10 @@ const Header = () => {
           confirmButtonColor: '#172A42'
         })
       } else{
-        // const account = await eth.request({method: 'eth_requestAccounts'})
+        // const account = await window.ethereum.request({method: 'eth_requestAccounts'})
         // setCurrentAccount(account[0])
         // setUserName(account[0])
-        activateBrowserWallet();
+        await activateBrowserWallet();
       } 
     }catch(err){
       console.error(err)
