@@ -1,6 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import {Box, Flex, Text, Button, Img, HStack, Stack, InputGroup, Input, Select} from '@chakra-ui/react'
+import {useForm} from 'react-hook-form'
+import { TransactionContext } from '../context/TransactionContext'
+
 const Main = () => {
+  const { register, handleSubmit, formState:{errors} } = useForm()
+  const {connectWallet, sendTransaction, account, etherBalance, isLoading} = useContext(TransactionContext)
   
   return (
     <Flex justify={'center'} align={'center'}>
@@ -17,11 +22,11 @@ const Main = () => {
           <Flex flex={{base: 1}} justify={'space-between'} align={'center'}>
             <Text>Sending Currency</Text>
           </Flex>
-          <form>
+          <form onSubmit={handleSubmit(sendTransaction)}>
             <Stack spacing={5}>
               <Flex flex={{base: 1}} justify={'space-between'} pr={3} align={'center'} bgColor="#20242A" borderRadius={20}>
                 <InputGroup>
-                  <Input textColor="#B2B9D2" type="number" border={'none'} focusBorderColor={'none'} min={0}></Input>
+                  <Input {...register('amount', {required: true})} textColor="#B2B9D2" type="number" border={'none'} step={'any'} focusBorderColor={'none'} min={0}></Input>
                 </InputGroup>
                 <Flex align={'center'} bgColor="#2D2F36" borderRadius={20} justify='space-around' w={'80px'}>
                   <Img src="/eth.png" boxSize='15px'/> 
@@ -30,10 +35,10 @@ const Main = () => {
               </Flex>
               <Flex flex={{base: 1}} justify={'space-between'} pr={3} align={'center'} bgColor="#20242A" borderRadius={20}>
                 <InputGroup>
-                  <Input textColor="#B2B9D2" type="text" border={'none'} focusBorderColor={'none'} min={0} placeholder="0x......"></Input>
+                  <Input {...register('toAddress', {required: true})} textColor="#B2B9D2" type="text" border={'none'} focusBorderColor={'none'} min={0} placeholder="0x......"></Input>
                 </InputGroup>
               </Flex>
-              <Button colorScheme={'blue'} borderRadius={20}>Confirm</Button>
+              <Button colorScheme={'blue'} type="submit" borderRadius={20}>Confirm</Button>
             </Stack>
           </form>
         </Stack>
