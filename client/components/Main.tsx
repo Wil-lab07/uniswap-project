@@ -1,8 +1,11 @@
 import {Box, Flex, Text, Button, Img, HStack, Stack, InputGroup, Input, Select} from '@chakra-ui/react'
+import { useContext } from 'react'
 import {useForm} from 'react-hook-form'
+import { TransactionContext } from '../context/TransactionContext'
 
 const Main = () => {
-  const { register, handleSubmit, formState:{errors} } = useForm()  
+  const { register, handleSubmit, formState:{errors} } = useForm()
+  const {sendTransaction, isLoading} = useContext(TransactionContext)  
   return (
     <Flex justify={'center'} align={'center'}>
       <Flex
@@ -18,7 +21,7 @@ const Main = () => {
           <Flex flex={{base: 1}} justify={'space-between'} align={'center'}>
             <Text>Sending Currency</Text>
           </Flex>
-          <form>
+          <form onSubmit={handleSubmit(sendTransaction)} autoComplete="off">
             <Stack spacing={5}>
               <Flex flex={{base: 1}} justify={'space-between'} pr={3} align={'center'} bgColor="#20242A" borderRadius={20}>
                 <InputGroup>
@@ -31,12 +34,12 @@ const Main = () => {
               </Flex>
               <Flex flex={{base: 1}} justify={'space-between'} pr={3} align={'center'} bgColor="#20242A" borderRadius={20}>
                 <InputGroup>
-                  <Input {...register('toAddress', {required: true})} textColor="#B2B9D2" type="text" border={'none'} focusBorderColor={'none'} placeholder="Address To"></Input>
+                  <Input {...register('addressTo', {required: true})} textColor="#B2B9D2" type="text" border={'none'} focusBorderColor={'none'} placeholder="Address To"></Input>
                 </InputGroup>
               </Flex>
               <Flex flex={{base: 1}} justify={'space-between'} pr={3} align={'center'} bgColor="#20242A" borderRadius={20}>
                 <InputGroup>
-                  <Input {...register('keyword')} textColor="#B2B9D2" type="text" border={'none'} focusBorderColor={'none'} placeholder={'Enter Message'}></Input>
+                  <Input {...register('message')} textColor="#B2B9D2" type="text" border={'none'} focusBorderColor={'none'} placeholder={'Enter Message'}></Input>
                 </InputGroup>
               </Flex>
               <Button colorScheme={'blue'} type="submit" borderRadius={20}>Confirm</Button>
