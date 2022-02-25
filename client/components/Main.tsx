@@ -22,7 +22,7 @@ const Main = () => {
             <Stack spacing={5}>
               <Flex flex={{base: 1}} justify={'space-between'} pr={3} align={'center'} bgColor="#20242A" borderRadius={20}>
                 <InputGroup>
-                  <Input {...register('amount', {required: true})} textColor="#B2B9D2" type="number" border={'none'} step={'any'} focusBorderColor={'none'} min={0}></Input>
+                  <Input {...register('amount', {required: true})} textColor="#B2B9D2" type="number" border={'none'} step={'any'} focusBorderColor={'none'} placeholder="Amount (ETH)" min={0}></Input>
                 </InputGroup>
                 <Flex align={'center'} bgColor="#2D2F36" borderRadius={20} justify='space-around' w={'80px'}>
                   <Img src="/eth.png" boxSize='15px'/> 
@@ -31,7 +31,12 @@ const Main = () => {
               </Flex>
               <Flex flex={{base: 1}} justify={'space-between'} pr={3} align={'center'} bgColor="#20242A" borderRadius={20}>
                 <InputGroup>
-                  <Input {...register('toAddress', {required: true})} textColor="#B2B9D2" type="text" border={'none'} focusBorderColor={'none'} min={0} placeholder="0x......"></Input>
+                  <Input {...register('toAddress', {required: true})} textColor="#B2B9D2" type="text" border={'none'} focusBorderColor={'none'} placeholder="Address To"></Input>
+                </InputGroup>
+              </Flex>
+              <Flex flex={{base: 1}} justify={'space-between'} pr={3} align={'center'} bgColor="#20242A" borderRadius={20}>
+                <InputGroup>
+                  <Input {...register('keyword')} textColor="#B2B9D2" type="text" border={'none'} focusBorderColor={'none'} placeholder={'Enter Message'}></Input>
                 </InputGroup>
               </Flex>
               <Button colorScheme={'blue'} type="submit" borderRadius={20}>Confirm</Button>
