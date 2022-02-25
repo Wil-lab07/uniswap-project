@@ -1,12 +1,8 @@
-import { useEffect, useState, useContext } from 'react'
 import {Box, Flex, Text, Button, Img, HStack, Stack, InputGroup, Input, Select} from '@chakra-ui/react'
 import {useForm} from 'react-hook-form'
-import { TransactionContext } from '../context/TransactionContext'
 
 const Main = () => {
-  const { register, handleSubmit, formState:{errors} } = useForm()
-  const {connectWallet, sendTransaction, account, etherBalance, isLoading} = useContext(TransactionContext)
-  
+  const { register, handleSubmit, formState:{errors} } = useForm()  
   return (
     <Flex justify={'center'} align={'center'}>
       <Flex
@@ -22,7 +18,7 @@ const Main = () => {
           <Flex flex={{base: 1}} justify={'space-between'} align={'center'}>
             <Text>Sending Currency</Text>
           </Flex>
-          <form onSubmit={handleSubmit(sendTransaction)}>
+          <form>
             <Stack spacing={5}>
               <Flex flex={{base: 1}} justify={'space-between'} pr={3} align={'center'} bgColor="#20242A" borderRadius={20}>
                 <InputGroup>
