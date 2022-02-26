@@ -1,7 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import {ethers} from 'ethers'
 import abi from '../../smart_contract/artifacts/contracts/Transactions.sol/Transactions.json'
-import {useConnect, useAccount, useBalance} from 'wagmi'
+import {useConnect, useAccount} from 'wagmi'
+import Swal from 'sweetalert2'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export const TransactionContext = React.createContext()
 
 export const TransactionProvider = ({children})=>{
@@ -12,6 +16,7 @@ export const TransactionProvider = ({children})=>{
     fetchEns: true,
   })
   const [isLoading, setLoading] = useState(false)
+  
 
   useEffect(()=>{
     if(!accountData){
@@ -28,6 +33,16 @@ export const TransactionProvider = ({children})=>{
 
   const sendTransaction = async (data)=>{
     try{
+      if(!accountData){
+        return Swal.fire({
+          icon: "error",
+          title: "Your Wallet's Not Connected!",
+          color: 'white',
+          confirmButtonText: 'Please Connect Your Wallet!',
+          confirmButtonColor: '#172a42',
+          background: '#171c26'
+        })
+      }
       setLoading(true)
       const {amount, addressTo, message} = data
       const transactionContract = await getEthereumContract()
@@ -48,9 +63,13 @@ export const TransactionProvider = ({children})=>{
         message
       )
 
-      console.log(send)
+      await send.wait()
+
       setLoading(false)
+
+      toast.success(`${`${accountData.address.slice(0, 7)}...${accountData.address.slice(35)}`} sending ${amount} ETH to ${`${addressTo.slice(0, 7)}...${addressTo.slice(35)}`}`)
     } catch(err){
+      setLoading(false)
       console.log(err)
     }
   }

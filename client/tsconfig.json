@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/Header.tsx", "components/Main.tsx", "context/TransactionContext.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/Header.tsx", "components/Main.tsx", "context/TransactionContext.js", "components/Transaction.tsx"],
   "exclude": ["node_modules"]
 }

@@ -5,7 +5,7 @@ import { TransactionContext } from '../context/TransactionContext'
 
 const Main = () => {
   const { register, handleSubmit, formState:{errors} } = useForm()
-  const {sendTransaction, isLoading} = useContext(TransactionContext)  
+  const {sendTransaction} = useContext(TransactionContext)  
   return (
     <Flex justify={'center'} align={'center'}>
       <Flex
