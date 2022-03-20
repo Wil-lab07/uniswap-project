@@ -17,18 +17,29 @@ export const TransactionProvider = ({children})=>{
   })
   const [isLoading, setLoading] = useState(false)
   
-
-  useEffect(()=>{
-    if(!accountData){
-      connect(connectData.connectors[0])
-    }
-  }, [])
-  
   const getEthereumContract = ()=>{
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner()
     const transactionContract = new ethers.Contract(contractAddress, contractABI, signer) 
     return transactionContract
+  }
+
+  const transactionEvent = async ()=>{
+    const transactionContract = await getEthereumContract()
+    const filter = await transactionContract.filters.Transfer()
+    const eventsData = await transactionContract.queryFilter(filter)
+    const data = []
+    eventsData.map((item)=>{
+      data.push({
+        sender: item.args[0],
+        receiver: item.args[1],
+        amount: item.args[2],
+        message: item.args[3],
+        timestamp: item.args[4],
+        keyword: item.args[5]
+      })
+    })
+    return data
   }
 
   const sendTransaction = async (data)=>{
@@ -78,6 +89,7 @@ export const TransactionProvider = ({children})=>{
     <TransactionContext.Provider
       value={{
         sendTransaction,
+        transactionEvent,
         isLoading
     }}
     >

@@ -7,7 +7,7 @@ const Main = () => {
   const { register, handleSubmit, formState:{errors} } = useForm()
   const {sendTransaction} = useContext(TransactionContext)  
   return (
-    <Flex justify={'center'} align={'center'}>
+    <Flex justify={'center'} align={'center'} border='solid' pt={10} pb={10}>
       <Flex
         borderRadius={30}
         bgColor="#191B1F"
