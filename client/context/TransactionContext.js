@@ -23,23 +23,9 @@ if(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS){
 export const TransactionProvider = ({children})=>{
   const contractAddress = '0xfF030AC5D7535529B15A2F1B2b8B0c6c577B6D2D'
   const contractABI = abi.abi
-  const [{data:connectData, error:connectError}, connect] = useConnect()
+  const [connectData, connect] = useConnect()
   const [{data:accountData}, disconnect] = useAccount({
     fetchEns: true,
-  })
-  const [txData, setTxData] = useState([])
-  const [addressTo, setAddressTo] = useState('')
-  const [amount, setAmount] = useState('')
-  const [message, setMessage] = useState('')
-  const [txResult, sendTx] = useContractWrite({
-    addressOrName: contractAddress,
-    contractInterface: abi.abi
-  }, 'addToBlockchain', {
-    args: [
-      addressTo,
-      amount,
-      message
-    ]
   })
   const [isLoading, setLoading] = useState(false)
   
@@ -70,7 +56,7 @@ export const TransactionProvider = ({children})=>{
 
   const sendTransaction = async (data)=>{
     try{
-      if(!accountData){
+      if(!connectData.data.connected){
         return Swal.fire({
           icon: "error",
           title: "Your Wallet's Not Connected!",
@@ -83,6 +69,7 @@ export const TransactionProvider = ({children})=>{
       setLoading(true)
       const {amount, addressTo, message} = data
       const amountTx = ethers.utils.parseEther(amount)
+      const transactionContract = await getEthereumContract()
 
       await window.ethereum.request({
         method: 'eth_sendTransaction',
@@ -94,18 +81,17 @@ export const TransactionProvider = ({children})=>{
         }]
       })
 
-      setAddressTo(addressTo)
-      setAmount(amountTx)
-      setMessage(message)
+      const txResult = await transactionContract.addToBlockchain(
+        addressTo,
+        amountTx,
+        message
+      )
 
-      await sendTx()
-      console.log(txResult)
+      await txResult.wait()
 
-      setLoading(txResult.loading)
+      setLoading(false)
 
-      if(txResult.loading === false){
-        toast.success(`${`${accountData.address.slice(0, 7)}...${accountData.address.slice(35)}`} sending ${amount} ETH to ${`${addressTo.slice(0, 7)}...${addressTo.slice(35)}`}`)
-      }
+      toast.success(`${`${accountData.address.slice(0, 7)}...${accountData.address.slice(35)}`} sending ${amount} ETH to ${`${addressTo.slice(0, 7)}...${addressTo.slice(35)}`}`)
     } catch(err){
       setLoading(false)
       console.log(err)

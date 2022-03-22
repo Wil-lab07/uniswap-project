@@ -1,19 +1,13 @@
-import {Box, Flex, Text, Button, Img, HStack, Stack, InputGroup, Input, Select} from '@chakra-ui/react'
-import { useContext } from 'react'
+import {Flex, Text, Button, Img, Stack, InputGroup, Input} from '@chakra-ui/react'
+import { useContext} from 'react'
 import {useForm} from 'react-hook-form'
-import {useContractWrite} from 'wagmi'
-import { ethers } from 'ethers'
 import { TransactionContext } from '../context/TransactionContext'
-import abi from '../../smart_contract/artifacts/contracts/Transactions.sol/Transactions.json'
 
 const Main = () => {
   const { register, handleSubmit, formState:{errors} } = useForm()
   const {sendTransaction} = useContext(TransactionContext)  
   const {isLoading} = useContext(TransactionContext)  
-  let contractAddress = ""
-  if(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS){
-    contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS
-  }
+
   return (
     <Flex justify={'center'} align={'center'} pt={10} pb={10}>
       <Flex

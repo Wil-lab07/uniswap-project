@@ -54,58 +54,6 @@ const Header = () => {
               </Button> 
             </>
           }
-          {/* {connectData.data?.connected === false ? 
-          <>
-            {connectData.data?.connectors[0].ready === false ? 
-              <Button 
-                colorScheme={'blackAlpha'} 
-                textColor="white" 
-                borderRadius={40} 
-                size={'sm'} 
-                px={2} 
-                py={5}
-                disabled
-              >
-                <Text p={2} borderRadius={40} bgColor="#172A42" textColor={'#4F90EA'}>{'Please Install Metamask'}</Text>
-              </Button>
-              :
-              <Button 
-                colorScheme={'blackAlpha'} 
-                textColor="white" 
-                borderRadius={40} 
-                size={'sm'} 
-                px={2} 
-                py={5}
-                key={connectData.data?.connectors[0].id}
-                onClick={() => connect(connectData.data?.connectors[0])}
-                isDisabled={false}
-              >
-                <Text p={2} borderRadius={40} bgColor="#172A42" textColor={'#4F90EA'}>Connect Wallet</Text>
-              </Button>
-            }
-          </>
-          :
-          <>
-            <Button textColor="white" colorScheme={'blackAlpha'} borderRadius={40} size={'sm'} px={5} py={5} onClick={disconnect}>
-              Disconnect
-            </Button>
-            <Button 
-              colorScheme={'blackAlpha'} 
-              textColor="white" 
-              borderRadius={40} 
-              size={'sm'} 
-              px={2} 
-              py={5}
-              disabled
-              _disabled={{textColor: 'white'}}
-            >
-              <Text p={2} borderRadius={40}>{`${accountData.data?.address.slice(0, 7)}...${accountData.data?.address.slice(35)}`}</Text>
-            </Button>
-            <Button textColor="white" colorScheme={'blackAlpha'} borderRadius={40} size={'sm'} px={5} py={5} disabled _disabled={{textColor: 'white'}}>
-              <Flex>{ethersBalance.data?.formatted.slice(0, 7)}<Img ml={2} src={'/eth.png'} w={'20px'}/></Flex>
-            </Button> 
-          </>
-          } */}
         </HStack>
       </Flex>
     </Flex>
