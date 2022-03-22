@@ -1,13 +1,21 @@
 import {Box, Flex, Text, Button, Img, HStack, Stack, InputGroup, Input, Select} from '@chakra-ui/react'
 import { useContext } from 'react'
 import {useForm} from 'react-hook-form'
+import {useContractWrite} from 'wagmi'
+import { ethers } from 'ethers'
 import { TransactionContext } from '../context/TransactionContext'
+import abi from '../../smart_contract/artifacts/contracts/Transactions.sol/Transactions.json'
 
 const Main = () => {
   const { register, handleSubmit, formState:{errors} } = useForm()
   const {sendTransaction} = useContext(TransactionContext)  
+  const {isLoading} = useContext(TransactionContext)  
+  let contractAddress = ""
+  if(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS){
+    contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS
+  }
   return (
-    <Flex justify={'center'} align={'center'} border='solid' pt={10} pb={10}>
+    <Flex justify={'center'} align={'center'} pt={10} pb={10}>
       <Flex
         borderRadius={30}
         bgColor="#191B1F"
@@ -19,7 +27,7 @@ const Main = () => {
       >
         <Stack spacing={5}>
           <Flex flex={{base: 1}} justify={'space-between'} align={'center'}>
-            <Text>Sending Currency</Text>
+            <Text textColor={'white'}>Sending Currency</Text>
           </Flex>
           <form onSubmit={handleSubmit(sendTransaction)} autoComplete="off">
             <Stack spacing={5}>
@@ -29,7 +37,7 @@ const Main = () => {
                 </InputGroup>
                 <Flex align={'center'} bgColor="#2D2F36" borderRadius={20} justify='space-around' w={'80px'}>
                   <Img src="/eth.png" boxSize='15px'/> 
-                  <Text>ETH</Text>       
+                  <Text textColor={'white'}>ETH</Text>       
                 </Flex>
               </Flex>
               <Flex flex={{base: 1}} justify={'space-between'} pr={3} align={'center'} bgColor="#20242A" borderRadius={20}>
@@ -42,7 +50,7 @@ const Main = () => {
                   <Input {...register('message')} textColor="#B2B9D2" type="text" border={'none'} focusBorderColor={'none'} placeholder={'Enter Message'}></Input>
                 </InputGroup>
               </Flex>
-              <Button colorScheme={'blue'} type="submit" borderRadius={20}>Confirm</Button>
+              <Button colorScheme={'blue'} type="submit" borderRadius={20} isLoading={isLoading}>Confirm</Button>
             </Stack>
           </form>
         </Stack>

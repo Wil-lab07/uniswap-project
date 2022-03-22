@@ -1,12 +1,24 @@
 import React, {useEffect, useState} from 'react'
 import {ethers} from 'ethers'
 import abi from '../../smart_contract/artifacts/contracts/Transactions.sol/Transactions.json'
-import {useConnect, useAccount} from 'wagmi'
+import {useConnect, useAccount, useContractWrite} from 'wagmi'
 import Swal from 'sweetalert2'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export const TransactionContext = React.createContext()
+
+let eth
+
+if(typeof window !== 'undefined'){
+  eth = window.ethereum
+}
+
+let contractAddress = ""
+
+if(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS){
+  contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS
+}
 
 export const TransactionProvider = ({children})=>{
   const contractAddress = '0xfF030AC5D7535529B15A2F1B2b8B0c6c577B6D2D'
@@ -15,10 +27,24 @@ export const TransactionProvider = ({children})=>{
   const [{data:accountData}, disconnect] = useAccount({
     fetchEns: true,
   })
+  const [txData, setTxData] = useState([])
+  const [addressTo, setAddressTo] = useState('')
+  const [amount, setAmount] = useState('')
+  const [message, setMessage] = useState('')
+  const [txResult, sendTx] = useContractWrite({
+    addressOrName: contractAddress,
+    contractInterface: abi.abi
+  }, 'addToBlockchain', {
+    args: [
+      addressTo,
+      amount,
+      message
+    ]
+  })
   const [isLoading, setLoading] = useState(false)
   
   const getEthereumContract = ()=>{
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const provider = new ethers.providers.Web3Provider(eth)
     const signer = provider.getSigner()
     const transactionContract = new ethers.Contract(contractAddress, contractABI, signer) 
     return transactionContract
@@ -56,8 +82,8 @@ export const TransactionProvider = ({children})=>{
       }
       setLoading(true)
       const {amount, addressTo, message} = data
-      const transactionContract = await getEthereumContract()
-      
+      const amountTx = ethers.utils.parseEther(amount)
+
       await window.ethereum.request({
         method: 'eth_sendTransaction',
         params: [{
@@ -68,17 +94,18 @@ export const TransactionProvider = ({children})=>{
         }]
       })
 
-      const send = await transactionContract.addToBlockchain(
-        addressTo,
-        ethers.utils.parseEther(amount),
-        message
-      )
+      setAddressTo(addressTo)
+      setAmount(amountTx)
+      setMessage(message)
 
-      await send.wait()
+      await sendTx()
+      console.log(txResult)
 
-      setLoading(false)
+      setLoading(txResult.loading)
 
-      toast.success(`${`${accountData.address.slice(0, 7)}...${accountData.address.slice(35)}`} sending ${amount} ETH to ${`${addressTo.slice(0, 7)}...${addressTo.slice(35)}`}`)
+      if(txResult.loading === false){
+        toast.success(`${`${accountData.address.slice(0, 7)}...${accountData.address.slice(35)}`} sending ${amount} ETH to ${`${addressTo.slice(0, 7)}...${addressTo.slice(35)}`}`)
+      }
     } catch(err){
       setLoading(false)
       console.log(err)
