@@ -6,13 +6,16 @@ import Footer from '../components/Footer'
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const Home: NextPage = () => {  
+
+  const style = {
+    wrapper: 'h-screen max-h-screen h-min-screen w-screen bg-[#171c26] text-white select-none flex flex-col justify-between'
+  }
+  
   return (
-    <>
+    <div className={style.wrapper}>
       <Header/>
-      <Flex direction={'column'} justifyContent={'center'}>
-        <Main/>
-        <Footer/>
-      </Flex>
+      <Main/>
+      <Footer/>
       <Flex w={'100%'}>
         <ToastContainer
           style={{width: "550px"}}
@@ -27,7 +30,7 @@ const Home: NextPage = () => {
           pauseOnHover
         />
       </Flex>
-    </>
+    </div>
   )
 }
 

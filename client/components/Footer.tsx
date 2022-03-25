@@ -1,14 +1,13 @@
-import {Box, Flex, Text, Button, Img, HStack, Stack, InputGroup, Input, Select} from '@chakra-ui/react'
-import {ethers, Event} from 'ethers'
+import {Flex, Text, Img, HStack, Stack, Link} from '@chakra-ui/react'
+import { ethers } from 'ethers'
 import { useEffect, useContext, useState } from 'react'
 import { useConnect } from 'wagmi'
-import abi from '../../smart_contract/artifacts/contracts/Transactions.sol/Transactions.json'
 import { TransactionContext } from '../context/TransactionContext'
 
 const Footer = () => {
   const {transactionEvent} = useContext(TransactionContext) 
   const [connectData, connect] = useConnect()
-  const [data, setData] = useState([]) 
+  const [data, setData] = useState<any[]>([]) 
   
   const event = async ()=>{
     const result = await transactionEvent()
@@ -22,8 +21,46 @@ const Footer = () => {
   }, [])
   
   return (
-    <Flex>
-     
+    <Flex justifyContent={'center'} align={'center'}>
+      <Flex flexDirection={'column'} justifyContent={'space-between'} overflow={'auto'}>
+        <Stack>
+          {data?.map((tx, index)=>(
+          <Flex border={'solid'} borderRadius={'10px'} pr={5} pl={5}>
+            <HStack spacing={3}>
+              <Flex flexDirection={'column'}>
+                <Flex>
+                  <Text>{ethers.utils.formatEther(tx.amount)}</Text>
+                  <Img src={'./ethCurrency.png'} width={'45px'}/>
+                  <Text>Sent</Text>
+                </Flex>
+                <Flex>
+                  <Text>To</Text>
+                </Flex>
+              </Flex>
+              <Flex>
+                <Flex>
+                  <Text textColor={'#f48706'} mr={2}>{`${tx.receiver.slice(0, 7)}...${tx.receiver.slice(35)}`}</Text>
+                  <Text>on</Text>
+                </Flex>
+              </Flex>
+              <Flex>
+                <Flex>
+                  <Text>{tx.timestamp}</Text>
+                </Flex>
+              </Flex>
+              <Flex>
+                <Flex>
+                  <Link href={`https://ropsten.etherscan.io/tx/${tx.hash}`} target={'_blank'} flexDirection={'column'} textColor={'#2172e5'} style={{ textDecoration: 'none' }}>
+                    <Text>View on</Text>
+                    <Text>EtherScan</Text>
+                  </Link>
+                </Flex>
+              </Flex>
+            </HStack>
+          </Flex>
+          ))}  
+        </Stack>
+      </Flex>
     </Flex>
   );
 }

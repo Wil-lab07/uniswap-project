@@ -29,8 +29,10 @@ contract Transactions{
     address payable receiver, 
     uint amount, 
     string memory message
-  ) public {
+  ) payable public {
     
+    receiver.transfer(msg.value);
+
     transactions.push(TransferStruct(
       msg.sender,
       receiver,

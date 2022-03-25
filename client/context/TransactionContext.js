@@ -14,20 +14,37 @@ if(typeof window !== 'undefined'){
   eth = window.ethereum
 }
 
-let contractAddress = ""
+let contractAdd = ""
 
 if(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS){
-  contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS
+  contractAdd = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS
 }
 
 export const TransactionProvider = ({children})=>{
-  const contractAddress = '0xfF030AC5D7535529B15A2F1B2b8B0c6c577B6D2D'
+  const contractAddress = contractAdd
   const contractABI = abi.abi
   const [connectData, connect] = useConnect()
   const [{data:accountData}, disconnect] = useAccount({
     fetchEns: true,
   })
   const [isLoading, setLoading] = useState(false)
+  const [addressTo, setAddressTo] = useState('')
+  const [amount, setAmount] = useState('')
+  const [msgValue, setMsgValue] = useState('0')
+  const [message, setMessage] = useState('')
+  const [sendResult, sendTx] = useContractWrite({
+    addressOrName: contractAddress,
+    contractInterface: contractABI
+  }, 'addToBlockchain', {
+    args: [
+      addressTo,
+      amount,
+      message
+    ],
+    overrides: {
+      value: ethers.utils.parseEther(msgValue)
+    }
+  })
   
   const getEthereumContract = ()=>{
     const provider = new ethers.providers.Web3Provider(eth)
@@ -41,13 +58,17 @@ export const TransactionProvider = ({children})=>{
     const filter = await transactionContract.filters.Transfer()
     const eventsData = await transactionContract.queryFilter(filter)
     const data = []
+    console.log(eventsData)
     eventsData.map((item)=>{
+      const date = new Date(item.args[4].toNumber() * 1000)
+      const formattedDate = new Intl.DateTimeFormat("en-US", { hour: "numeric", day: "numeric", month: "short", year: "numeric", minute: "numeric" }).format(date);
       data.push({
+        hash: item.transactionHash,
         sender: item.args[0],
         receiver: item.args[1],
         amount: item.args[2],
         message: item.args[3],
-        timestamp: item.args[4],
+        timestamp: formattedDate,
         keyword: item.args[5]
       })
     })
@@ -66,32 +87,24 @@ export const TransactionProvider = ({children})=>{
           background: '#171c26'
         })
       }
-      setLoading(true)
       const {amount, addressTo, message} = data
       const amountTx = ethers.utils.parseEther(amount)
-      const transactionContract = await getEthereumContract()
 
-      await window.ethereum.request({
-        method: 'eth_sendTransaction',
-        params: [{
-          from: accountData.address,
-          to: addressTo,
-          gas: '0x5208', //2100 GWEI
-          value: ethers.utils.parseEther(amount)._hex
-        }]
-      })
+      await setAddressTo(addressTo)
+      await setAmount(amountTx)
+      await setMessage(message)
+      await setMsgValue(amount)
 
-      const txResult = await transactionContract.addToBlockchain(
-        addressTo,
-        amountTx,
-        message
-      )
+      setLoading(true)
+      await sendTx()
 
-      await txResult.wait()
+      console.log(sendResult)
 
-      setLoading(false)
-
+      if(sendResult.error){
+        throw sendResult.error
+      }
       toast.success(`${`${accountData.address.slice(0, 7)}...${accountData.address.slice(35)}`} sending ${amount} ETH to ${`${addressTo.slice(0, 7)}...${addressTo.slice(35)}`}`)
+      setLoading(false)
     } catch(err){
       setLoading(false)
       console.log(err)

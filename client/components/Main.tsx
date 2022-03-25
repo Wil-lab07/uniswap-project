@@ -9,7 +9,7 @@ const Main = () => {
   const {isLoading} = useContext(TransactionContext)  
 
   return (
-    <Flex justify={'center'} align={'center'} pt={10} pb={10}>
+    <Flex justify={'center'} align={'center'}>
       <Flex
         borderRadius={30}
         bgColor="#191B1F"

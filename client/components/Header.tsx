@@ -9,7 +9,7 @@ const Header = () => {
     addressOrName: accountData.data?.address
   })
   return (
-    <Flex py={2} px={4} bgColor="#191B1F" align={'center'} justify={'space-between'} w={'100%'}>
+    <Flex py={2} px={4} bgColor="#191B1F" align={'center'} justify={'space-between'}>
       <Flex flex={{base: 1}} justify={{base: 'center', md: 'start'}} align="center">
         <Text>SENDS</Text>
       </Flex>
