@@ -22,7 +22,23 @@ const Footer = () => {
   
   return (
     <Flex justifyContent={'center'} align={'center'}>
-      <Flex flexDirection={'column'} justifyContent={'space-between'} overflow={'auto'}>
+      <Flex 
+        flexDirection={'column'} 
+        justifyContent={'space-between'} 
+        overflow={'auto'} 
+        height={'250px'}
+        sx={{
+          '&::-webkit-scrollbar': {
+            width: '10px',
+            borderRadius: '5px',
+            backgroundColor: `rgba(0, 0, 0, 0.05)`,
+          },
+          '&::-webkit-scrollbar-thumb': {
+            borderRadius: '5px',
+            bgColor: 'gray.700'
+          },
+        }}
+      >
         <Stack>
           {data?.map((tx, index)=>(
           <Flex border={'solid'} borderRadius={'10px'} pr={5} pl={5}>

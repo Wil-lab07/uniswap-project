@@ -28,23 +28,10 @@ export const TransactionProvider = ({children})=>{
     fetchEns: true,
   })
   const [isLoading, setLoading] = useState(false)
-  const [addressTo, setAddressTo] = useState('')
-  const [amount, setAmount] = useState('')
-  const [msgValue, setMsgValue] = useState('0')
-  const [message, setMessage] = useState('')
   const [sendResult, sendTx] = useContractWrite({
     addressOrName: contractAddress,
     contractInterface: contractABI
-  }, 'addToBlockchain', {
-    args: [
-      addressTo,
-      amount,
-      message
-    ],
-    overrides: {
-      value: ethers.utils.parseEther(msgValue)
-    }
-  })
+  }, 'addToBlockchain')
   
   const getEthereumContract = ()=>{
     const provider = new ethers.providers.Web3Provider(eth)
@@ -90,21 +77,25 @@ export const TransactionProvider = ({children})=>{
       const {amount, addressTo, message} = data
       const amountTx = ethers.utils.parseEther(amount)
 
-      await setAddressTo(addressTo)
-      await setAmount(amountTx)
-      await setMessage(message)
-      await setMsgValue(amount)
-
       setLoading(true)
-      await sendTx()
+      await sendTx({
+        args:[
+          addressTo,
+          amountTx,
+          message
+        ],
+        overrides:{
+          value: ethers.utils.parseEther(amount)
+        }
+      })
 
       console.log(sendResult)
 
       if(sendResult.error){
         throw sendResult.error
       }
-      toast.success(`${`${accountData.address.slice(0, 7)}...${accountData.address.slice(35)}`} sending ${amount} ETH to ${`${addressTo.slice(0, 7)}...${addressTo.slice(35)}`}`)
       setLoading(false)
+      toast.success(`${`${accountData.address.slice(0, 7)}...${accountData.address.slice(35)}`} sending ${amount} ETH to ${`${addressTo.slice(0, 7)}...${addressTo.slice(35)}`}`)
     } catch(err){
       setLoading(false)
       console.log(err)
