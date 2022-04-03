@@ -59,7 +59,7 @@ export const TransactionProvider = ({children})=>{
         keyword: item.args[5]
       })
     })
-    return data
+    return data.reverse()
   }
 
   const sendTransaction = async (data)=>{
