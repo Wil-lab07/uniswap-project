@@ -1,4 +1,20 @@
-import {Flex, Text, Img, HStack, Stack, Link} from '@chakra-ui/react'
+import {
+  Flex, 
+  Text, 
+  Img, 
+  HStack, 
+  Stack, 
+  Link,
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer,
+} from '@chakra-ui/react'
 import { ethers } from 'ethers'
 import { useEffect, useContext, useState } from 'react'
 import { useConnect } from 'wagmi'
@@ -26,7 +42,7 @@ const Footer = () => {
         flexDirection={'column'} 
         justifyContent={'space-between'} 
         overflow={'auto'} 
-        height={'250px'}
+        h={'250px'}
         sx={{
           '&::-webkit-scrollbar': {
             width: '10px',
@@ -39,43 +55,37 @@ const Footer = () => {
           },
         }}
       >
-        <Stack>
-          {data?.map((tx, index)=>(
-          <Flex border={'solid'} borderRadius={'10px'} pr={5} pl={5}>
-            <HStack spacing={3}>
-              <Flex flexDirection={'column'}>
-                <Flex>
+        <Table variant={'simple'}>
+          <Thead>
+            <Tr>
+              <Th textAlign={'center'}>Amount (ETH)</Th>
+              <Th textAlign={'center'}>Receiver</Th>
+              <Th textAlign={'center'}>Timestamp</Th>
+              <Th textAlign={'center'}>EtherScan</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {data.map((tx, index)=>(
+              <Tr>
+                <Td textAlign={'center'}>
                   <Text>{ethers.utils.formatEther(tx.amount)}</Text>
-                  <Img src={'./ethCurrency.png'} width={'45px'}/>
-                  <Text>Sent</Text>
-                </Flex>
-                <Flex>
-                  <Text>To</Text>
-                </Flex>
-              </Flex>
-              <Flex>
-                <Flex>
-                  <Text textColor={'#f48706'} mr={2}>{`${tx.receiver.slice(0, 7)}...${tx.receiver.slice(35)}`}</Text>
-                  <Text>on</Text>
-                </Flex>
-              </Flex>
-              <Flex>
-                <Flex>
-                  <Text>{tx.timestamp}</Text>
-                </Flex>
-              </Flex>
-              <Flex>
-                <Flex>
+                </Td>
+                <Td textAlign={'center'} textColor={'#f48706'}>
+                  {`${tx.receiver.slice(0, 7)}...${tx.receiver.slice(35)}`}
+                </Td>
+                <Td textAlign={'center'}>
+                  {tx.timestamp}
+                </Td>
+                <Td textAlign={'center'}>
                   <Link href={`https://ropsten.etherscan.io/tx/${tx.hash}`} target={'_blank'} flexDirection={'column'} textColor={'#2172e5'} style={{ textDecoration: 'none' }}>
                     <Text>View on</Text>
                     <Text>EtherScan</Text>
                   </Link>
-                </Flex>
-              </Flex>
-            </HStack>
-          </Flex>
-          ))}  
-        </Stack>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
       </Flex>
     </Flex>
   );
