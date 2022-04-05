@@ -1,19 +1,13 @@
 import {
   Flex, 
   Text, 
-  Img, 
-  HStack, 
-  Stack, 
   Link,
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
-  TableContainer,
 } from '@chakra-ui/react'
 import { ethers } from 'ethers'
 import { useEffect, useContext, useState } from 'react'
@@ -46,6 +40,7 @@ const Footer = () => {
         sx={{
           '&::-webkit-scrollbar': {
             width: '10px',
+            height: '10px',
             borderRadius: '5px',
             backgroundColor: `rgba(0, 0, 0, 0.05)`,
           },
@@ -53,6 +48,9 @@ const Footer = () => {
             borderRadius: '5px',
             bgColor: 'gray.700'
           },
+          '&::-webkit-scrollbar-corner':{
+            display: 'none'
+          }
         }}
       >
         <Table variant={'simple'}>
