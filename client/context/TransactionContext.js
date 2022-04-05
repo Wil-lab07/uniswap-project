@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {ethers} from 'ethers'
 import abi from '../../smart_contract/artifacts/contracts/Transactions.sol/Transactions.json'
 import {useConnect, useAccount, useContractWrite} from 'wagmi'
 import Swal from 'sweetalert2'
-import { ToastContainer, toast } from 'react-toastify';
+import {toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export const TransactionContext = React.createContext()
@@ -45,7 +45,6 @@ export const TransactionProvider = ({children})=>{
     const filter = await transactionContract.filters.Transfer()
     const eventsData = await transactionContract.queryFilter(filter)
     const data = []
-    console.log(eventsData)
     eventsData.map((item)=>{
       const date = new Date(item.args[4].toNumber() * 1000)
       const formattedDate = new Intl.DateTimeFormat("en-US", { hour: "numeric", day: "numeric", month: "short", year: "numeric", minute: "numeric" }).format(date);
