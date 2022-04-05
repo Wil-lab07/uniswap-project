@@ -1,7 +1,7 @@
-import {Box, Flex, Text, Button, Img, HStack, IconButton, useDisclosure, Collapse, Stack} from '@chakra-ui/react'
+import {Flex, Text, Button, Img, HStack, IconButton, useDisclosure, Collapse, Stack} from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import Link from 'next/link'
-import {useConnect, useAccount, chain, useBalance, InjectedConnector} from 'wagmi'
+import {useConnect, useAccount, useBalance} from 'wagmi'
 
 const Header = () => {
   const [connectData, connect] = useConnect()
@@ -69,63 +69,64 @@ const Header = () => {
             }
           </HStack>
         </Flex>
-      </Flex>
-      <Collapse 
-        style={{
-          position: 'fixed', 
-          width: '100%',
-          top: '50px',
-          background: '#191B1F',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 1
-        }} 
-        in={isOpen} 
-        animateOpacity
+      </Flex>  
+      <Flex 
+        position={'fixed'}
+        w={'100%'}
+        top={'50px'}
+        backgroundColor={'#191B1F'}
+        justifyContent= {'center'}
+        alignItems= {'center'}
+        zIndex={1}
+        display={{base: 'flex', md: 'none'}}
       >
-        <Stack>
-          <Button textColor="white" colorScheme={'blackAlpha'} borderRadius={40} size={'sm'} px={5} py={5}>
-            <Link href="https://www.coingecko.com/">Charts</Link>
-          </Button>
-          {!connectData.data?.connected ? 
-            <Button
-              colorScheme={'blackAlpha'} 
-              textColor="white" 
-              borderRadius={40} 
-              size={'sm'} 
-              px={2} 
-              py={5}
-              onClick={()=>{connect(connectData.data?.connectors[0])}}
-            >
-              <Text p={2} borderRadius={40} bgColor="#172A42" textColor={'#4F90EA'}>{!connectData.data?.connectors[0].ready ? 'Please Install Metamask' : 'Connect Wallet'}</Text>
+        <Collapse 
+          in={isOpen} 
+          animateOpacity
+        >
+          <Stack padding={3}>
+            <Button textColor="white" colorScheme={'blackAlpha'} borderRadius={40} size={'sm'} px={5} py={5}>
+              <Link href="https://www.coingecko.com/">Charts</Link>
             </Button>
-          :
-            <>
-              <Button textColor="white" colorScheme={'blackAlpha'} borderRadius={40} size={'sm'} px={5} py={5} onClick={disconnect}>
-                Disconnect
-              </Button>
-              <Button 
+            {!connectData.data?.connected ? 
+              <Button
                 colorScheme={'blackAlpha'} 
                 textColor="white" 
                 borderRadius={40} 
                 size={'sm'} 
                 px={2} 
                 py={5}
-                disabled
-                _disabled={{textColor: 'white'}}
+                onClick={()=>{connect(connectData.data?.connectors[0])}}
               >
-                <Text p={2} borderRadius={40}>{`${accountData.data?.address.slice(0, 7)}...${accountData.data?.address.slice(35)}`}</Text>
+                <Text p={2} borderRadius={40} bgColor="#172A42" textColor={'#4F90EA'}>{!connectData.data?.connectors[0].ready ? 'Please Install Metamask' : 'Connect Wallet'}</Text>
               </Button>
-              <Button textColor="white" colorScheme={'blackAlpha'} borderRadius={40} size={'sm'} px={5} py={5} disabled _disabled={{textColor: 'white'}}>
-                <Flex>{ethersBalance.data?.formatted.slice(0, 7)}<Img ml={2} src={'/eth.png'} w={'20px'}/></Flex>
-              </Button> 
-            </>
-          }
-        </Stack> 
-      </Collapse>
+            :
+              <>
+                <Button textColor="white" colorScheme={'blackAlpha'} borderRadius={40} size={'sm'} px={5} py={5} onClick={disconnect}>
+                  Disconnect
+                </Button>
+                <Button 
+                  colorScheme={'blackAlpha'} 
+                  textColor="white" 
+                  borderRadius={40} 
+                  size={'sm'} 
+                  px={2} 
+                  py={5}
+                  disabled
+                  _disabled={{textColor: 'white'}}
+                >
+                  <Text p={2} borderRadius={40}>{`${accountData.data?.address.slice(0, 7)}...${accountData.data?.address.slice(35)}`}</Text>
+                </Button>
+                <Button textColor="white" colorScheme={'blackAlpha'} borderRadius={40} size={'sm'} px={5} py={5} disabled _disabled={{textColor: 'white'}}>
+                  <Flex>{ethersBalance.data?.formatted.slice(0, 7)}<Img ml={2} src={'/eth.png'} w={'20px'}/></Flex>
+                </Button> 
+              </>
+            }
+          </Stack>     
+        </Collapse> 
+      </Flex>
     </>
   );
 }
  
-export default Header;
+export default Header; 
